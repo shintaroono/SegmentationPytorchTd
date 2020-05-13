@@ -11,5 +11,5 @@ try to create human segmentation using pytorch and touchdesiger.
 
 
 ## reference ##
-https://github.com/qubvel/segmentation_models.pytorch
+https://github.com/qubvel/segmentation_models.pytorch  
 https://github.com/Ajasra/Spout-for-Python
