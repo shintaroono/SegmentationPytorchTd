@@ -343,23 +343,23 @@ test_dataset_vis = Dataset(
 )
 
 
-for i in range(5):
-    n = np.random.choice(len(test_dataset))
+# for i in range(5):
+#     n = np.random.choice(len(test_dataset))
     
-    image_vis = test_dataset_vis[n][0].astype('uint8')
-    image, gt_mask = test_dataset[n]
+#     image_vis = test_dataset_vis[n][0].astype('uint8')
+#     image, gt_mask = test_dataset[n]
     
-    gt_mask = gt_mask.squeeze()
+#     gt_mask = gt_mask.squeeze()
     
-    x_tensor = torch.from_numpy(image).to(DEVICE).unsqueeze(0)
-    pr_mask = best_model.predict(x_tensor)
-    pr_mask = (pr_mask.squeeze().cpu().numpy().round())
+#     x_tensor = torch.from_numpy(image).to(DEVICE).unsqueeze(0)
+#     pr_mask = best_model.predict(x_tensor)
+#     pr_mask = (pr_mask.squeeze().cpu().numpy().round())
         
-    visualize(
-        image=image_vis, 
-        ground_truth_mask=gt_mask, 
-        predicted_mask=pr_mask
-    )
+#     visualize(
+#         image=image_vis, 
+#         ground_truth_mask=gt_mask, 
+#         predicted_mask=pr_mask
+#     )
 
 
 
@@ -448,4 +448,4 @@ def capture_segment(mirror=True, size=None):
 
 # capture_segment()
 # capture_segment(True, (int(320), int(480)))
-# capture_segment(True, (int(1280/2), int(960/2)))
+capture_segment(True, (int(1280/2), int(960/2)))
