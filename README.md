@@ -1,14 +1,14 @@
 # SegmentationPytorchTd
 
-## outline ##
+### outline ###
 try to create human segmentation using pytorch and touchdesiger.
 
   
-## spec ##
+### spec ###
 - windows 10
 - pytorch 1.5.0
 
   
-## reference ##
+### reference ###
 https://github.com/qubvel/segmentation_models.pytorch  
 https://github.com/Ajasra/Spout-for-Python
