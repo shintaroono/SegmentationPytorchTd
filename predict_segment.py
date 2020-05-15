@@ -105,7 +105,7 @@ def parse_args():
     desc = "Spout receiver/sender template"
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('--type', type=str, default='input-output', help='input/output/input-output')
-    parser.add_argument('--spout_size', nargs = 2, type=int, default=[480, 360], help='Width and height of the spout receiver and sender')   
+    parser.add_argument('--spout_size', nargs = 2, type=int, default=[480, 320], help='Width and height of the spout receiver and sender')   
     parser.add_argument('--spout_input_name', type=str, default='input', help='Spout receiving name')  
     parser.add_argument('--spout_output_name', type=str, default='output', help='Spout sending name')  
     parser.add_argument('--silent', type=bool, default=False, help='Hide pygame window')
@@ -194,74 +194,52 @@ def get_preprocessing(preprocessing_fn):
     return albu.Compose(_transform)
 
 """ segment with the model for video capture. """
-def capture_segment(mirror=True, size=None):
-    """segment capture video from camera"""
-    preprocess = get_preprocessing(preprocessing_fn)
-    cap = cv2.VideoCapture(0)
-    window_name = 'capture_segment'
-    while True:
-        ret, frame = cap.read()
-        if mirror is True:
-            frame = frame[:,::-1]
-        if size is not None and len(size) == 2:
-            frame = cv2.resize(frame, size)
-        image = frame
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        sample = preprocess(image=image, mask=None)
-        x_tensor = torch.from_numpy(sample["image"])
-        x_tensor = x_tensor.to(DEVICE).unsqueeze(0)
-        pr_mask = best_model.predict(x_tensor)
-        pr_mask = (pr_mask.squeeze().cpu().numpy().round())
-        cv2.imshow('capture_camera', frame)
-        cv2.imshow(window_name, pr_mask)
-        k = cv2.waitKey(1)
-        if k == 27:
-            break
-    cap.release()
-    cv2.destroyAllWindows()
+# def capture_segment(mirror=True, size=None):
+#     """segment capture video from camera"""
+#     preprocess = get_preprocessing(preprocessing_fn)
+#     cap = cv2.VideoCapture(0)
+#     window_name = 'capture_segment'
+#     while True:
+#         ret, frame = cap.read()
+#         if mirror is True:
+#             frame = frame[:,::-1]
+#         if size is not None and len(size) == 2:
+#             frame = cv2.resize(frame, size)
+#         image = frame
+#         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+#         sample = preprocess(image=image, mask=None)
+#         x_tensor = torch.from_numpy(sample["image"])
+#         x_tensor = x_tensor.to(DEVICE).unsqueeze(0)
+#         pr_mask = best_model.predict(x_tensor)
+#         pr_mask = (pr_mask.squeeze().cpu().numpy().round())
+#         cv2.imshow('capture_camera', frame)
+#         cv2.imshow(window_name, pr_mask)
+#         k = cv2.waitKey(1)
+#         if k == 27:
+#             break
+#     cap.release()
+#     cv2.destroyAllWindows()
 
 
 
 """ main own functions. """
 def main_pipeline(data):
 
-    """ face recognition sample. """
-    # pil_image = Image.fromarray(np.zeros_like(data))
-    # d = ImageDraw.Draw(pil_image)
-
-    # face_landmarks_list = face_recognition.face_landmarks(data)
-
-    # for face_landmarks in face_landmarks_list:
-    #     for facial_feature in face_landmarks.keys():
-    #         # print("The {} in this face has the following points: {}".format(facial_feature, face_landmarks[facial_feature]))
-    #         d.line(face_landmarks[facial_feature], width=1)
-
-    # # output = data
-    # output = np.array(pil_image)
-
-
     """ segmentation. """
-    # print('pil_image: ', pil_image.shape)
-    # print("d: ", d.shape)
-    # print('data: ', data.shape)
-
     preprocess = get_preprocessing(preprocessing_fn)
 
     image = data
-
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     sample = preprocess(image=image, mask=None)
     x_tensor = torch.from_numpy(sample["image"])
     x_tensor = x_tensor.to(DEVICE).unsqueeze(0)
     pr_mask = best_model.predict(x_tensor)
-    # pr_mask = (pr_mask.squeeze().cpu().numpy().round())
+    pr_mask *= 255
+    pr_mask = pr_mask.squeeze().cpu().numpy().round()
+    pr_mask = cv2.cvtColor(pr_mask, cv2.COLOR_GRAY2RGB)
 
-    print(x_tensor.size())
+    output = pr_mask
 
-    output = image
-
-    
     return output
 
 
