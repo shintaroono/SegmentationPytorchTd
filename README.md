@@ -1,7 +1,8 @@
 # SegmentationPytorchTd
 
 ### outline ###
-try to create human segmentation using pytorch and touchdesiger.
+try to create human segmentation using pytorch and touchdesiger.  
+*just for my own private work repo under processing, so uploaded files are not full data.
 
   
 ### spec ###
