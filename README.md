@@ -5,7 +5,7 @@ try to create human segmentation using pytorch and touchdesiger.
 *just for my own private work repo under processing, so uploaded files are not full data.
 
 ### sample ###
-fpn: https://youtu.be/Xlk0HjtgY4k
+https://youtu.be/tPO5oCRXYDI
 
 ### spec ###
 - windows 10
