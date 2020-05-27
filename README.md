@@ -10,6 +10,7 @@ https://youtu.be/gLavduMDe-Y
 ### spec ###
 - windows 10
 - pytorch 1.5.0
+- touchdesigner 2020.20625
 
 ### reference ###
 https://github.com/qubvel/segmentation_models.pytorch  
